@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx6="http://www.tibco.com/schemas/sample/SharedResources/Schema.xsd" xmlns:pfx="http://www.tibco.com/schemas/sample/Shared Resources/Schema.xsd" xmlns:pfx2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx3="http://www.tibco.com/schemas/sample/Shared Resources/Schema.xsd2" xmlns:pfx4="http://www.tibco.com/schemas/sample/Shared Resources/Schema.xsd3" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/Shared Resources/SampleSchema.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file/v2" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
+    <xsd:import namespace="http://www.tibco.com/schemas/sample/Shared Resources/Schema.xsd2" schemaLocation="/SharedResources/Rendor Schema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/Shared Resources/SampleSchema.xsd" schemaLocation="/SharedResources/SampleSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/sample/SharedResources/Schema.xsd" schemaLocation="/SharedResources/parseSchema.xsd"/>
+    <pd:name>Parse data/parse Xml and rendor XML.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>147</pd:startX>
+    <pd:startY>78</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>659</pd:endX>
+    <pd:endY>78</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1654195973057</pd:targetNamespace>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>394</pd:x>
+        <pd:y>78</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>true</validateOutput>
+            <term ref="pfx6:Employees"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="concat('&lt;?xml version = &quot;1.0&quot; encoding = &quot;UTF-8&quot;?>&lt;Employees xmlns = &quot;http://www.tibco.com/schemas/sample/SharedResources/Schema.xsd&quot; xmlns:xsi = &quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation = &quot;http://www.tibco.com/schemas/sample/SharedResources/Schema.xsd parseSchema.xsd&quot;>',substring-after($Read-File/pfx2:ReadActivityOutputTextClass/fileContent/textContent, '&lt;Employees>'))"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Read File">
+        <pd:type>com.tibco.plugin.file.FileReadActivity</pd:type>
+        <pd:resourceType>ae.activities.FileReadActivity</pd:resourceType>
+        <pd:x>234</pd:x>
+        <pd:y>78</pd:y>
+        <config>
+            <encoding>text</encoding>
+        </config>
+        <pd:inputBindings>
+            <ns2:ReadActivityInputClass>
+                <fileName>
+                    <xsl:value-of select="&quot;C:\TIBCO workspace\sample\Employee.XML&quot;"/>
+                </fileName>
+            </ns2:ReadActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Write File">
+        <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
+        <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+        <pd:x>550</pd:x>
+        <pd:y>78</pd:y>
+        <config>
+            <encoding>text</encoding>
+            <compressFile>None</compressFile>
+            <append>true</append>
+            <createMissingDirectories>false</createMissingDirectories>
+        </config>
+        <pd:inputBindings>
+            <pfx2:WriteActivityInputTextClass>
+                <fileName>
+                    <xsl:value-of select="&quot;C:\Users\saman\Downloads\F\Parse.txt&quot;"/>
+                </fileName>
+                <textContent>
+                    <xsl:value-of select="concat('XML is',$Parse-XML)"/>
+                </textContent>
+            </pfx2:WriteActivityInputTextClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Read File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Read File</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Write File</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Write File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

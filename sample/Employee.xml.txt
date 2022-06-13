@@ -1,0 +1,23 @@
+<?xml version = "1.0" encoding="UTF-8" standalone="yes"?>
+<Employees>
+  <Employee>
+  	<name>bhaskar</name>
+  	<id>1</id>
+  	<age>24</age>
+  </Employee>
+  <Employee>
+  	<name>vamsi</name>
+  	<id>2</id>
+  	<age>3</age>
+  </Employee>
+  <Employee>
+  	<name>prasad</name>
+  	<id>3</id>
+  	<age>24</age>
+  </Employee>
+  <Employee>
+  	<name>nihal</name>
+  	<id>4</id>
+  	<age>2</age>
+  </Employee>
+</Employees>
